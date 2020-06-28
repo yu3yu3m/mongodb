@@ -207,3 +207,8 @@ Add shard
 mongos> sh.addShard("shard2rs/shard2svr1,shard2svr2,shard2svr3")
 mongos> sh.status()
 ```
+
+
+## Reference
+https://www.youtube.com/watch?v=Q2lJH156SUQ&list=PL34sAs7_26wPvZJqUJhjyNtm7UedWR8Ps&index=6
+https://www.youtube.com/watch?v=Rwg26U0Zs1o&list=PL34sAs7_26wPvZJqUJhjyNtm7UedWR8Ps&index=9
