@@ -1,6 +1,6 @@
 # Mongo DB
 
-## Single Instance
+## mongoSingle (Single MongoDB)
 
 ### 1. start.sh
 
@@ -118,7 +118,7 @@ local   0.000GB
 ```
 
 
-## Shard Instance
+## mongoSharding (MongoDB Sharding)
 
 ### Config servers
 Start config servers (3 member replica set)
