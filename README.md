@@ -47,7 +47,7 @@ mydb    0.000GB
 
 Insert data
 ```
-> db.mycollection.insert({name:"john",age:20})
+> db.mycollection.insert({name:'john',age:20})
 WriteResult({ "nInserted" : 1 })
 
 > db.mycollection.find()
@@ -83,7 +83,7 @@ WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 
 Remove data
 ```
-> db.mycollection.update({name:'john'},{$unset:{dept:""}})
+> db.mycollection.update({name:'john'},{$unset:{dept:''}})
 WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 
 > db.mycollection.find()
@@ -115,4 +115,95 @@ admin   0.000GB
 config  0.000GB
 local   0.000GB
 > 
+```
+
+
+## Shard Instance
+
+### Config servers
+Start config servers (3 member replica set)
+Initiate replica set
+```
+mongo mongodb://localhost:30001
+```
+```
+rs.initiate(
+  {
+    _id: "cfgrs",
+    configsvr: true,
+    members: [
+      { _id : 0, host : "cfgsvr1" },
+      { _id : 1, host : "cfgsvr2" },
+      { _id : 2, host : "cfgsvr3" }
+    ]
+  }
+)
+
+rs.status()
+```
+
+### Shard 1 servers
+Start shard 1 servers (3 member replicas set)
+Initiate replica set
+```
+mongo mongodb://localhost:30005
+```
+```
+rs.initiate(
+  {
+    _id: "shard1rs",
+    members: [
+      { _id : 0, host : "shard1svr1" },
+      { _id : 1, host : "shard1svr2" },
+      { _id : 2, host : "shard1svr3" }
+    ]
+  }
+)
+
+rs.status()
+```
+
+### Mongos Router
+Start mongos query router
+
+### Add shard to the cluster
+Connect to mongos
+```
+mongo mongodb://localhost:30004
+```
+Add shard
+```
+mongos> sh.addShard("shard1rs/shard1svr1,shard1svr2,shard1svr3")
+mongos> sh.status()
+```
+## (Option) Adding another shard
+
+### Duplicate Shard1
+Initiate replica set
+```
+mongo mongodb://localhost:XXXXX
+```
+```
+rs.initiate(
+  {
+    _id: "shard2rs",
+    members: [
+      { _id : 0, host : "localhost:XXXXX" },
+      { _id : 1, host : "localhost:XXXXX" },
+      { _id : 2, host : "localhost:XXXXX" }
+    ]
+  }
+)
+
+rs.status()
+```
+### Add shard to the cluster
+Connect to mongos
+```
+mongo mongodb://localhost:30004
+```
+Add shard
+```
+mongos> sh.addShard("shard2rs/shard2svr1,shard2svr2,shard2svr3")
+mongos> sh.status()
 ```
