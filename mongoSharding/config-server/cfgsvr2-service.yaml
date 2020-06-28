@@ -1,0 +1,94 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yaml
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: cfgsvr2
+  name: cfgsvr2
+spec:
+  type: NodePort
+  ports:
+  - name: "30002"
+    port: 27017
+    targetPort: 27017
+    nodePort: 30002    
+  selector:
+    io.kompose.service: cfgsvr2
+status:
+  loadBalancer: {}
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yaml
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: cfgsvr2
+  name: cfgsvr2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: cfgsvr2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yaml
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: cfgsvr2
+    spec:
+      containers:
+      - args:
+        - mongod
+        - --configsvr
+        - --replSet
+        - cfgrs
+        - --port
+        - "27017"
+        - --dbpath
+        - /data/db
+        image: mongo
+        imagePullPolicy: ""
+        name: cfgsvr2
+        ports:
+        - containerPort: 27017
+        resources: {}
+        volumeMounts:
+        - mountPath: /data/db
+          name: cfgsvr2
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: cfgsvr2
+        persistentVolumeClaim:
+          claimName: cfgsvr2
+status: {}
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: cfgsvr2
+  name: cfgsvr2
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+status: {}
