@@ -5,7 +5,7 @@
 ### 1. start.sh
 
 ### 2. mongo mongodb://localhost:30001
-(Please install mongodb in your machine, or you can do it inside container. In this case, "mongo mongodb://localhost:27017")
+(If you have mongodb in your machine, please execute the above command. If not, you can also do it inside container. In this case, "mongo mongodb://localhost:27017" in your container)
 
 ```
 yumiyaha@YUMIYAHA-M-7396 mongoSingle % mongo mongodb://localhost:30001  
