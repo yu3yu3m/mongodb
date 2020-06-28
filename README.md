@@ -118,7 +118,7 @@ local   0.000GB
 ```
 
 
-## mongoSharding (MongoDB Sharding)
+## mongoSharding (MongoDB Sharding) which is transformed from https://github.com/justmeandopensource/learn-mongodb
 
 ### Config servers
 Start config servers (3 member replica set)
