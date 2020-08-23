@@ -2,10 +2,6 @@
 
 ## mongoSingle (Single MongoDB)
 
-### How to use
-(Japanese) https://www.youtube.com/watch?v=K53KwBDeZYY <br>
-(English) https://www.youtube.com/watch?v=f36YoCXG6i8
-
 ### 1. start.sh
 
 ### 2. mongo mongodb://localhost:30001
